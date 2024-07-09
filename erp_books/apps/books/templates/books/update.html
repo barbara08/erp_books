@@ -1,0 +1,18 @@
+<h4>Book Update: </h4>
+</br>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    
+    {{ form.title }}
+    {{ form.page }}
+    {{ form.edition_date }}
+    {{ form.editorial }}
+    {{ form.author }}
+    
+    <button type="submit" >Acept</button>
+    <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/books/) -->
+    <a href="{% url 'book_list' %}" type="submit" >Volver</a>
+    
+</form>

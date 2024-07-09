@@ -1,0 +1,76 @@
+
+<h4>Books List: </h4>
+</br>
+
+
+<button>
+  <a href="{% url 'book_create' %}">Add Book</a>
+</button>
+
+<ul>
+  {% for book in object_list %}
+  <li>
+     {{book.title}} 
+     {{book.page}} 
+     {{book.edition_date}} 
+     {{book.editorial}} 
+     {{book.author}} 
+
+     <a href="{% url 'book_detail' book.id %}">Detail</a>
+     <a href="{% url 'book_update' book.id %}">Update</a>
+     <a href="{% url 'book_delete' book.id %}">Delete</a>
+  </li>
+  {% endfor %}
+</ul>
+
+
+<!-- 
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+<Table>
+
+    <tr>
+      <th>Title</th>
+      <th>Page</th>
+      <th>Edition_Date</th>
+      <th>Editorial</th>
+      <th>Author</th>
+      <th></th>
+      <th></th>
+    </tr>
+
+    {% for book in object_list %}
+    
+      <tr>
+        <td> {{book.title}} </td>
+        <td> {{book.page}}  </td>
+        <td> {{book.edition_date}} </td>    
+        <td> {{book.editorial}} </td>
+        <td> {{book.author}} </td>   
+        <td>
+          <a href="{% url 'book_detail' book.id %}">Detail</a>
+        </td>
+        <td>
+          <a href="{% url 'book_update' book.id %}">Update</a>
+        </td>
+        <td>
+          <a href="{% url 'book_delete' book.id %}">Delete</a>
+        </td>
+      </tr>
+
+    {% endfor %}
+
+</Table>
+</form>
+-->
+
+
+
+
+{% if messages %}
+  <h1 class="messages list-group mb-3">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </h1>
+{% endif %}

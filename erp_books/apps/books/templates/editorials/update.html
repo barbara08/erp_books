@@ -1,0 +1,15 @@
+<h4>Editorials Update: </h4>
+</br>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label>Nombre</label>
+    
+    {{ form.name }}
+    
+    <button type="submit" >Acept</button>
+    <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/editorials/) -->
+    <a href="{% url 'editorial_list' %}" type="submit" >Volver</a>
+    
+</form>

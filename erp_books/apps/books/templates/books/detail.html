@@ -1,0 +1,12 @@
+<h4>Book Details: </h4>
+
+    {{object.title}}
+    {{object.page}}
+    {{object.edition_date}}
+    {{object.editorial}}
+    {{object.author}}
+
+
+
+<!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/books/) -->
+<a href="{% url 'book_list' %}" type="submit" >Volver</a>
