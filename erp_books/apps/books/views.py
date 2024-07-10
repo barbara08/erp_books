@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 # Instanciamos las vistas genéricas de Django
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -16,6 +15,7 @@ from django.contrib import messages
 
 # Habilitamos los mensajes para class-based views
 from django.contrib.messages.views import SuccessMessageMixin
+
 
 # Llamamos a la clase 'Author' que se encuentra en nuestro archivo 'models.py'
 
@@ -134,7 +134,7 @@ class BookDelete(SuccessMessageMixin, DeleteView):
     fields = "__all__"
 
     def get_success_url(self):
-        success_message = 'Book  %(title)s Delete succesfully !'
+        success_message = f'Book  {self.object.title} delete succesfully !'
         messages.success(self.request, (success_message))
         return reverse('book_list')
 

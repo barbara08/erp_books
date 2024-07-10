@@ -13,7 +13,7 @@ class Author(models.Model):
 
 
 class Editorial(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=20)
 
     def __str__(self):
         return f"{self.name} ({self.num_books()})"
@@ -23,7 +23,7 @@ class Editorial(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=40)
     page = models.IntegerField(default=0)
     edition_date = models.DateField("date published")
     editorial = models.ForeignKey(

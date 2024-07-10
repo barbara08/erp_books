@@ -1,4 +1,6 @@
 from django.urls import path
+from django.views.generic import TemplateView
+
 
 from .views import (
     AuthorList,
@@ -22,8 +24,9 @@ from .views import (
     BookDelete
 )
 
-
 urlpatterns = [
+    path('', TemplateView.as_view(template_name="index.html"), name="index_ppal"),
+    # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),
     path('authors/', AuthorList.as_view(template_name="authors/index.html"),
          name='author_list'),
     # La ruta 'create' en donde mostraremos un nuevo author o registro
