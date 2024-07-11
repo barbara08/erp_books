@@ -1,12 +1,14 @@
 <form method="post" enctype="multipart/form-data">
-{% csrf_token %}
+    {% csrf_token %}
 
-<label>Nombre</label>
+    <label>Nombre</label>
 
-{{ form.name }}
+    {{ form.name }}
 
-<button type="submit" >Acept</button>
-<!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/authors/) -->
-<a href="{% url 'author_list' %}" type="submit" >Volver</a>
+    <button type="submit" >Acept</button>
+    </br>
+
+    <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/authors/) -->
+    <a href="{% url 'author_list' %}" type="submit" >Return to Author List</a>
 
 </form>

@@ -25,7 +25,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="index.html"), name="index_ppal"),
+    path('', TemplateView.as_view(
+        template_name="index.html"), name="index_ppal"),
     # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),
     path('authors/', AuthorList.as_view(template_name="authors/index.html"),
          name='author_list'),

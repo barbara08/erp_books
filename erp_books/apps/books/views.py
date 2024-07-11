@@ -61,7 +61,7 @@ class AuthorDelete(SuccessMessageMixin, DeleteView):
     # Redireccionamos a la página principal luego de eliminar un registro
     def get_success_url(self):
         # Mostramos este Mensaje luego de Eliminar un Author
-        success_message = 'Author  %(name)s Delete succesfully !'
+        success_message = f'Author  {self.object.name} delete succesfully !'
         messages.success(self.request, (success_message))
         # Redireccionamos a la vista principal 'author_list'
         return reverse('author_list')
@@ -98,7 +98,7 @@ class EditorialDelete(SuccessMessageMixin, DeleteView):
     fields = "__all__"
 
     def get_success_url(self):
-        success_message = 'Editorial  %(name)s Delete succesfully !'
+        success_message = f'Editorial  {self.object.name} delete succesfully !'
         messages.success(self.request, (success_message))
         return reverse('editorial_list')
 

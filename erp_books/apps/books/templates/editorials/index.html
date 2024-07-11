@@ -1,25 +1,47 @@
+{% extends "index_with_button.html" %}
 
-<h4>Editorials List: </h4>
-</br>
-<button>
-    <a href="{% url 'editorial_create' %}">Add Editorial</a>
-</button>
-<ul>
-    {% for editorial in object_list %}
-    <li>
-       {{editorial.name}} 
-       <a href="{% url 'editorial_detail' editorial.id %}">Detail</a>
-       <a href="{% url 'editorial_update' editorial.id %}">Update</a>
-       <a href="{% url 'editorial_delete' editorial.id %}">Delete</a>
-    </li>
-    {% endfor %}
-</ul>
+{% block content %}
 
+  <h4>Editorials List: </h4>
+  </br>
 
-{% if messages %}
-  <h1 class="messages list-group mb-3">
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-  </h1>
-{% endif %}
+  <button>
+      <a href="{% url 'editorial_create' %}">Add Editorial</a>
+  </button>
+  </br>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <Table>
+
+      <tr>
+        <th>Name</th>
+      </tr>
+
+      {% for editorial in object_list %}
+        <tr>
+          <td> {{editorial.name}}  </td>
+        
+        
+          <td>  <a href="{% url 'editorial_detail' editorial.id %}">Detail</a></td>
+        
+        
+          <td> <a href="{% url 'editorial_update' editorial.id %}">Update</a></td>
+        
+        
+          <td>  <a href="{% url 'editorial_delete' editorial.id %}">Delete</a></td>
+      </tr>
+      {% endfor %}
+      
+    </Table>
+  </form>
+
+  {% if messages %}
+    <h1 class="messages list-group mb-3">
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+    </h1>
+  {% endif %}
+
+{% endblock %}

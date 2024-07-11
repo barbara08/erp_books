@@ -1,6 +1,7 @@
+{% extends "base.html" %}
 
 {% block content %}
-<a href="{% url 'book_list' %}">Book</a>
-<a href="{% url 'editorial_list' %}">Editorial</a>
-<a href="{% url 'author_list' %}">Author</a>
+    <a href="{% url 'book_list' %}">Book</a>
+    <a href="{% url 'editorial_list' %}">Editorial</a>
+    <a href="{% url 'author_list' %}">Author</a>
 {% endblock %}

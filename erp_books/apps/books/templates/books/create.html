@@ -19,9 +19,11 @@
 </br>
     <label>Author</label>
     {{ form.author }}
-    
+</br>
     <button type="submit" >Acept</button>
+
     <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/books/) -->
-    <a href="{% url 'book_list' %}" type="submit" >Volver</a>
-    
+    <button>
+        <a href="{% url 'book_list' %}" type="submit" >Return to book list</a> 
+    </button>
 </form>
