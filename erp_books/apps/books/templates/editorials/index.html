@@ -4,44 +4,50 @@
 
   <h4>Editorials List: </h4>
   </br>
+  <a class="btn btn-success" href="{% url 'editorial_create' %}" role="button">Add Editorial</a>
 
-  <button>
-      <a href="{% url 'editorial_create' %}">Add Editorial</a>
-  </button>
   </br>
+  </br>
+
+  {% if messages %}
+  <h1 class="alert alert-secondary" role="alert">
+    {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+  </h1>
+  {% endif %}
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <Table>
-
-      <tr>
-        <th>Name</th>
-      </tr>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
 
       {% for editorial in object_list %}
         <tr>
           <td> {{editorial.name}}  </td>
-        
-        
-          <td>  <a href="{% url 'editorial_detail' editorial.id %}">Detail</a></td>
-        
-        
-          <td> <a href="{% url 'editorial_update' editorial.id %}">Update</a></td>
-        
-        
-          <td>  <a href="{% url 'editorial_delete' editorial.id %}">Delete</a></td>
+          <td>
+            <a class="btn btn-info" href="{% url 'editorial_detail' editorial.id %}" role="button">Detail</a>
+          <td>
+          <td>
+            <a class="btn btn-warning" href="{% url 'editorial_update' editorial.id %}" role="button">Update</a>
+          </td>
+          <td>
+            <a class="btn btn-danger"  href="{% url 'editorial_delete' editorial.id %}" role="button">Delete</a>
+          </td>      
+          <td></td>  
       </tr>
       {% endfor %}
       
     </Table>
   </form>
-
-  {% if messages %}
-    <h1 class="messages list-group mb-3">
-      {% for message in messages %}
-      {{ message }}
-      {% endfor %}
-    </h1>
-  {% endif %}
 
 {% endblock %}

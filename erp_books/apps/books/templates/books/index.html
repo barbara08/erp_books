@@ -4,53 +4,60 @@
     <h4>Books List: </h4>
     </br>
 
-    <button>
-      <a href="{% url 'book_create' %}">Add Book</a>
-    </button>
+    <a class="btn btn-success" href="{% url 'book_create' %}" role="button">Add Book</a>
+   
     </br>
+    </br>
+    {% if messages %}
+    <h1 class="alert alert-secondary" role="alert">
+      {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </h1>
+  {% endif %}
     
-    <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-      <Table>
 
+      <table class="table">
+        <thead class="thead-light">
           <tr>
-            <th>Title</th>
-            <th>Page</th>
-            <th>Edition_Date</th>
-            <th>Editorial</th>
-            <th>Author</th>
+            <th scope="col">id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Page</th>
+            <th scope="col">Edition_Date</th>
+            <th scope="col">Editorial</th>
+            <th scope="col">Author</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
+        </thead>
+        {% for book in object_list %}
+          <tr>
+            <td>{{book.id}}</td>
+            <td>{{book.title}}</td>
+            <td> {{book.page}}  </td>
+            <td> {{book.edition_date}} </td>    
+            <td> {{book.editorial}} </td>
+            <td> {{book.author}} </td>  
+            <td>
+              <a class="btn btn-info" href="{% url 'book_detail' book.id %}" role="button">Detail</a>
 
-          {% for book in object_list %}
+              <td>
+                <a class="btn btn-warning" href="{% url 'book_update' book.id %}" role="button">Update</a>
+              </td>
+              <td>
+                <a class="btn btn-danger"href="{% url 'book_delete' book.id %}" role="button">Delete</a>
+              </td>
+            </td>
+          </tr>
           
-            <tr>
-              <td> {{book.title}} </td>
-              <td> {{book.page}}  </td>
-              <td> {{book.edition_date}} </td>    
-              <td> {{book.editorial}} </td>
-              <td> {{book.author}} </td>   
-              <td>
-                <a href="{% url 'book_detail' book.id %}">Detail</a>
-              </td>
-              <td>
-                <a href="{% url 'book_update' book.id %}">Update</a>
-              </td>
-              <td>
-                <a href="{% url 'book_delete' book.id %}">Delete</a>
-              </td>
-            </tr>
-
           {% endfor %}
 
       </Table>
+
     </form>
 
-      {% if messages %}
-        <h1 class="messages list-group mb-3">
-          {% for message in messages %}
-          {{ message }}
-          {% endfor %}
-        </h1>
-      {% endif %}
-
 {% endblock %}
+

@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="{% url 'book_list' %}">Book</a>
-    <a href="{% url 'editorial_list' %}">Editorial</a>
-    <a href="{% url 'author_list' %}">Author</a>
+      
+    <a class="btn btn-success" href="{% url 'book_list' %}" role="button">Books</a>
+    <a class="btn btn-success" href="{% url 'editorial_list' %}" role="button">Editorial</a>
+    <a class="btn btn-success" href="{% url 'author_list' %}" role="button">Author</a>
+
 {% endblock %}
+
+
+  
+
+    
+    

@@ -2,5 +2,9 @@
 
 
 {% block boton_volver %}
-    <a href="{% url 'index_ppal' %}" type="submit" >Return to main page</a>
+
+  <button type="button" class="btn btn-link">
+    <a class="btn btn-primary" href="{% url 'index_ppal' %}" role="button">Return to main page</a>
+  </button>
+
 {% endblock %}
