@@ -1,4 +1,4 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 # Instanciamos las vistas genéricas de Django
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -16,8 +16,10 @@ from django.contrib import messages
 # Habilitamos los mensajes para class-based views
 from django.contrib.messages.views import SuccessMessageMixin
 
-
-# Llamamos a la clase 'Author' que se encuentra en nuestro archivo 'models.py'
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import EditorialSerializer
 
 
 class AuthorList(ListView):
@@ -139,38 +141,68 @@ class BookDelete(SuccessMessageMixin, DeleteView):
         return reverse('book_list')
 
 
-"""
-ANTERIOR
-from django.shortcuts import render
-
-# Create your views here.
-from django.http import HttpResponse
-from django.template import loader
-
-from .models import Book, Editorial, Author
+# API
 
 
-def index(request):
-    template = loader.get_template("books/index.html")
-    context = {
-        "num editorial": Editorial.objects.all().count(),
-        "num author": Author.objects.all().count(),
-        "number_books": Book.objects.count(),
-        "book1": Book.objects.first(),
-    }
-    return HttpResponse(template.render(context, request))
+class EditorialListApiView(APIView):
+    # 1. List all
+    # def get(self, request, *args, **kwargs):
+
+    def get(self, *args, **kwargs):
+
+        editorials = Editorial.objects.all()
+        serializer = EditorialSerializer(editorials, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'name': request.data.get('name'),
+        }
+        serializer = EditorialSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class EditorialDetailApiView(APIView):
 
-def create_books(request):
-    new_book = Book(title='a new book', page=444, edition_date="2024-07-01", editorial=1, author=1)
-    new_book.save()
+    def get_object(self, editorial_id):
+        try:
+            return Editorial.objects.get(id=editorial_id)
+        except Editorial.DoesNotExist:
+            return None
 
+    # 3. Retrieve
+    def get(self, request, editorial_id, *args, **kwargs):
+        editorial_instance = self.get_object(editorial_id)
+        if not editorial_instance:
+            return Response(
+                {"res": "Object with editorial id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
+        serializer = EditorialSerializer(editorial_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-def show_books(request):
-    template = loader.get_template("books/index.html")
-    obj = Book.objects.all()
-    context = {'obj': obj}
-    return HttpResponse(template.render(context, request))
-"""
+    # 4. Update
+    def put(self, request, editorial_id, *args, **kwargs):
+
+        editorial_instance = self.get_object(editorial_id)
+        if not editorial_instance:
+            return Response(
+                {"res": "Object with editorial id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'name': request.data.get('name'),
+        }
+        serializer = EditorialSerializer(
+            instance=editorial_instance, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

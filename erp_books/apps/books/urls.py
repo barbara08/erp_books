@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView
+# from rest_framework import routers, serializers, viewsets     Pte de ver
 
 
 from .views import (
@@ -23,8 +24,14 @@ from .views import (
     BookUpdate,
     BookDelete
 )
+from .views import (
+    EditorialListApiView,
+    EditorialDetailApiView,
+)
 
 urlpatterns = [
+    path('api', EditorialListApiView.as_view()),
+    path('api/<int:editorial_id>/', EditorialDetailApiView.as_view()),
     path('', TemplateView.as_view(
         template_name="index.html"), name="index_ppal"),
     # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),
@@ -60,4 +67,5 @@ urlpatterns = [
          BookUpdate.as_view(template_name="books/update.html"), name='book_update'),
     path('books/delete/<int:pk>',
          BookDelete.as_view(template_name="books/delete.html"), name='book_delete'),
+
 ]
