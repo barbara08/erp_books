@@ -27,11 +27,20 @@ from .views import (
 from .views import (
     EditorialListApiView,
     EditorialDetailApiView,
+    AuthorListApiView,
+    AuthorDetailApiView,
+    BookListApiView,
+    BookDetailApiView,
 )
 
 urlpatterns = [
-    path('api', EditorialListApiView.as_view()),
-    path('api/<int:editorial_id>/', EditorialDetailApiView.as_view()),
+    path('api/editorial', EditorialListApiView.as_view()),
+    path('api/editorial/<int:editorial_id>/',
+         EditorialDetailApiView.as_view()),
+    path('api/author', AuthorListApiView.as_view()),
+    path('api/author/<int:author_id>/', AuthorDetailApiView.as_view()),
+    path('api/book', BookListApiView.as_view()),
+    path('api/book/<int:book_id>/', BookDetailApiView.as_view()),
     path('', TemplateView.as_view(
         template_name="index.html"), name="index_ppal"),
     # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),

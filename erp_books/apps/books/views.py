@@ -19,7 +19,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import EditorialSerializer
+from .serializers import EditorialSerializer, AuthorSerializer, BookSerializer
 
 
 class AuthorList(ListView):
@@ -206,3 +206,178 @@ class EditorialDetailApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# 5. Delete
+    def delete(self, request, editorial_id, *args, **kwargs):
+        editorial_instance = self.get_object(editorial_id)
+        if not editorial_instance:
+            return Response(
+                {"res": "Object with editorial id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        editorial_instance.delete()
+        return Response(
+            {"res": "Object deleted!"},
+            status=status.HTTP_200_OK
+        )
+
+
+class AuthorListApiView(APIView):
+    # 1. List all
+    def get(self, *args, **kwargs):
+
+        authors = Author.objects.all()
+        serializer = AuthorSerializer(authors, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'name': request.data.get('name'),
+        }
+        serializer = AuthorSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AuthorDetailApiView(APIView):
+
+    def get_object(self, author_id):
+        try:
+            return Author.objects.get(id=author_id)
+        except Author.DoesNotExist:
+            return None
+
+    # 3. Retrieve
+    def get(self, request, author_id, *args, **kwargs):
+        author_instance = self.get_object(author_id)
+        if not author_instance:
+            return Response(
+                {"res": "Object with author id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = AuthorSerializer(author_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 4. Update
+    def put(self, request, author_id, *args, **kwargs):
+
+        author_instance = self.get_object(author_id)
+        if not author_instance:
+            return Response(
+                {"res": "Object with author id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'name': request.data.get('name'),
+        }
+        serializer = AuthorSerializer(
+            instance=author_instance, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# 5. Delete
+    def delete(self, request, author_id, *args, **kwargs):
+        author_instance = self.get_object(author_id)
+        if not author_instance:
+            return Response(
+                {"res": "Object with author id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        author_instance.delete()
+        return Response(
+            {"res": "Object deleted!"},
+            status=status.HTTP_200_OK
+        )
+
+
+class BookListApiView(APIView):
+    # 1. List all
+    def get(self, *args, **kwargs):
+
+        books = Book.objects.all()
+        # bookss = Book.objects.filter(editorial='editorial')
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'title': request.data.get('title'),
+            'page': request.data.get('page'),
+            'edition_date': request.data.get('edition_date'),
+            'editorial': request.data.get('editorial'),
+            'author': request.data.get('author'),
+        }
+        serializer = BookSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BookDetailApiView(APIView):
+
+    def get_object(self, book_id):
+        try:
+            return Book.objects.get(id=book_id)
+        except Book.DoesNotExist:
+            return None
+
+    # 3. Retrieve
+    def get(self, request, book_id, *args, **kwargs):
+        book_instance = self.get_object(book_id)
+        if not book_instance:
+            return Response(
+                {"res": "Object with book id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = BookSerializer(book_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 4. Update
+    def put(self, request, book_id, *args, **kwargs):
+
+        book_instance = self.get_object(book_id)
+        if not book_instance:
+            return Response(
+                {"res": "Object with book id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'title': request.data.get('title'),
+            'page': request.data.get('page'),
+            'edition_date': request.data.get('edition_date'),
+            'editorial': request.data.get('editorial'),
+            'author': request.data.get('author'),
+        }
+        serializer = BookSerializer(
+            instance=book_instance, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# 5. Delete
+    def delete(self, request, book_id, *args, **kwargs):
+        book_instance = self.get_object(book_id)
+        if not book_instance:
+            return Response(
+                {"res": "Object with book id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        book_instance.delete()
+        return Response(
+            {"res": "Object deleted!"},
+            status=status.HTTP_200_OK
+        )
