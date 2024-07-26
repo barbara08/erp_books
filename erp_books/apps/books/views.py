@@ -16,6 +16,7 @@ from django.contrib import messages
 # Habilitamos los mensajes para class-based views
 from django.contrib.messages.views import SuccessMessageMixin
 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, DestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -144,15 +145,10 @@ class BookDelete(SuccessMessageMixin, DeleteView):
 # API
 
 
-class EditorialListApiView(APIView):
+class EditorialListApiView(ListCreateAPIView):
     # 1. List all
-    # def get(self, request, *args, **kwargs):
-
-    def get(self, *args, **kwargs):
-
-        editorials = Editorial.objects.all()
-        serializer = EditorialSerializer(editorials, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    serializer_class = EditorialSerializer
+    queryset = Editorial.objects.all()
 
     # 2. Create
     def post(self, request, *args, **kwargs):
@@ -168,6 +164,58 @@ class EditorialListApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class EditorialUpdateApiView(RetrieveUpdateAPIView):
+    queryset = Editorial.objects.all()
+    serializer_class = EditorialSerializer
+    partial = True
+
+
+class EditorialDeleteApiView(DestroyAPIView):
+    queryset = Editorial.objects.all()
+    serializer_class = EditorialSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response(print("delete Editorial"))
+
+
+class AuthorListApiView(ListCreateAPIView):
+    # 1. List all
+    serializer_class = AuthorSerializer
+    queryset = Author.objects.all()
+
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'name': request.data.get('name'),
+        }
+        serializer = AuthorSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AuthorUpdateApiView(RetrieveUpdateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    partial = True
+
+
+class AuthorDeleteApiView(DestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response(print("delete Author"))
+
+
+"""
 class EditorialDetailApiView(APIView):
 
     def get_object(self, editorial_id):
@@ -222,10 +270,12 @@ class EditorialDetailApiView(APIView):
         )
 
 
+
+
 class AuthorListApiView(APIView):
     # 1. List all
-    def get(self, *args, **kwargs):
 
+    def get(self, *args, **kwargs):
         authors = Author.objects.all()
         serializer = AuthorSerializer(authors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -296,6 +346,8 @@ class AuthorDetailApiView(APIView):
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
         )
+
+"""
 
 
 class BookListApiView(APIView):

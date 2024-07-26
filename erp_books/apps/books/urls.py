@@ -26,19 +26,24 @@ from .views import (
 )
 from .views import (
     EditorialListApiView,
-    EditorialDetailApiView,
+    EditorialUpdateApiView,
+    EditorialDeleteApiView,
     AuthorListApiView,
-    AuthorDetailApiView,
     BookListApiView,
     BookDetailApiView,
 )
 
+
 urlpatterns = [
     path('api/editorial', EditorialListApiView.as_view()),
-    path('api/editorial/<int:editorial_id>/',
-         EditorialDetailApiView.as_view()),
+    path('api/editorial/<int:pk>/',
+         EditorialUpdateApiView.as_view()),
+    path('api/editorialdelete/<int:pk>/',
+         EditorialDeleteApiView.as_view()),
+    # path('api/editorial/<int:editorial_id>/',
+    # EditorialUpdateApiView.as_view()),
     path('api/author', AuthorListApiView.as_view()),
-    path('api/author/<int:author_id>/', AuthorDetailApiView.as_view()),
+    # path('api/author/<int:author_id>/', AuthorDetailApiView.as_view()),
     path('api/book', BookListApiView.as_view()),
     path('api/book/<int:book_id>/', BookDetailApiView.as_view()),
     path('', TemplateView.as_view(
