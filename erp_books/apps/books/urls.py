@@ -29,8 +29,11 @@ from .views import (
     EditorialUpdateApiView,
     EditorialDeleteApiView,
     AuthorListApiView,
+    AuthorUpdateApiView,
+    AuthorDeleteApiView,
     BookListApiView,
-    BookDetailApiView,
+    BookUpdateApiView,
+    BookDeleteApiView
 )
 
 
@@ -40,15 +43,18 @@ urlpatterns = [
          EditorialUpdateApiView.as_view()),
     path('api/editorialdelete/<int:pk>/',
          EditorialDeleteApiView.as_view()),
-    # path('api/editorial/<int:editorial_id>/',
-    # EditorialUpdateApiView.as_view()),
     path('api/author', AuthorListApiView.as_view()),
-    # path('api/author/<int:author_id>/', AuthorDetailApiView.as_view()),
+    path('api/author/<int:pk>/',
+         AuthorUpdateApiView.as_view()),
+    path('api/authordelete/<int:pk>/',
+         AuthorDeleteApiView.as_view()),
     path('api/book', BookListApiView.as_view()),
-    path('api/book/<int:book_id>/', BookDetailApiView.as_view()),
+    path('api/book/<int:pk>/',
+         BookUpdateApiView.as_view()),
+    path('api/bookdelete/<int:pk>/',
+         BookDeleteApiView.as_view()),
     path('', TemplateView.as_view(
         template_name="index.html"), name="index_ppal"),
-    # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),
     path('authors/', AuthorList.as_view(template_name="authors/index.html"),
          name='author_list'),
     # La ruta 'create' en donde mostraremos un nuevo author o registro
@@ -83,3 +89,11 @@ urlpatterns = [
          BookDelete.as_view(template_name="books/delete.html"), name='book_delete'),
 
 ]
+"""
+# path('api/editorial/<int:editorial_id>/',
+    # EditorialUpdateApiView.as_view()),
+# path('api/author/<int:author_id>/', AuthorDetailApiView.as_view()),
+ # path('', IndexView.as_view(template_name="index.html"), name="index_ppal"),
+    # path('api/book/<int:book_id>/', BookDetailApiView.as_view()),
+
+"""

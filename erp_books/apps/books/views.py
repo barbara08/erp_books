@@ -215,6 +215,45 @@ class AuthorDeleteApiView(DestroyAPIView):
         return Response(print("delete Author"))
 
 
+class BookListApiView(ListCreateAPIView):
+    # 1. List all
+    serializer_class = BookSerializer
+    queryset = Book.objects.all()
+
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'title': request.data.get('title'),
+            'page': request.data.get('page'),
+            'edition_date': request.data.get('edition_date'),
+            'editorial': request.data.get('editorial'),
+            'author': request.data.get('author'),
+        }
+        serializer = BookSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BookUpdateApiView(RetrieveUpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    partial = True
+
+
+class BookDeleteApiView(DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = AuthorSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response(print("delete Book"))
+
+
 """
 class EditorialDetailApiView(APIView):
 
@@ -347,7 +386,7 @@ class AuthorDetailApiView(APIView):
             status=status.HTTP_200_OK
         )
 
-"""
+
 
 
 class BookListApiView(APIView):
@@ -375,6 +414,7 @@ class BookListApiView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class BookDetailApiView(APIView):
@@ -433,3 +473,4 @@ class BookDetailApiView(APIView):
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
         )
+"""
