@@ -3,6 +3,8 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.db.models import Q
+
 # Instanciamos el modelo 'Author' para poder usarlo en nuestras Vistas CRUD
 from .models import Author, Editorial, Book
 
@@ -21,6 +23,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import EditorialSerializer, AuthorSerializer, BookSerializer
+
+from rest_framework import filters
+from rest_framework.viewsets import ModelViewSet
 
 
 class AuthorList(ListView):
@@ -108,6 +113,16 @@ class EditorialDelete(SuccessMessageMixin, DeleteView):
 
 class BookList(ListView):
     model = Book
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) or
+                Q(editorial__name__icontains=query)
+            ).distinct()
+        return queryset
 
 
 class BookCreate(SuccessMessageMixin, CreateView):
@@ -220,6 +235,16 @@ class BookListApiView(ListCreateAPIView):
     serializer_class = BookSerializer
     queryset = Book.objects.all()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) or
+                Q(editorial__name__icontains=query)
+            ).distinct()
+        return queryset
+
     # 2. Create
     def post(self, request, *args, **kwargs):
 
@@ -252,6 +277,15 @@ class BookDeleteApiView(DestroyAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(print("delete Book"))
+
+# Search
+
+
+class EditorialApiViewSet(ModelViewSet):
+    serializer_class = EditorialSerializer
+    queryset = Editorial.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 """

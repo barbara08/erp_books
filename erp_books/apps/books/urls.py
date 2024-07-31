@@ -36,7 +36,6 @@ from .views import (
     BookDeleteApiView
 )
 
-
 urlpatterns = [
     path('api/editorial', EditorialListApiView.as_view()),
     path('api/editorial/<int:pk>/',
