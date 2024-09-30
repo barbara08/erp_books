@@ -1,16 +1,29 @@
-<h4>Editorials Create: </h4>
-</br>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+    <body>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-   
-    <label>Nombre</label>
-    
-    {{ form.name }}
-    
-    <button type="submit" >Acept</button>
-</br>
-    <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/editorials/) -->
-    <a href="{% url 'editorial_list' %}" type="submit" >Return to Editorial List</a>
-    
-</form>
+        <h4>Create Editorial: </h4>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <label>Nombre</label>
+                    {{ form.name }}
+                    <button type="submit" class="btn btn-success">Acept</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Botón para volver a la vista principal (http://127.0.0.1:8000/books/authors/) -->
+        <a href="{% url 'editorial_list' %}" type="submit" >Return to Editorial List</a>
+
+    </body>
+</html>
+
+
