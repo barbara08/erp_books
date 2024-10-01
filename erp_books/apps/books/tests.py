@@ -36,11 +36,13 @@ class AuthorModelTest(TestCase):
 
 class BookModelTest(TestCase):
     def setUp(self):
+
         self.book = Book.objects.create(
-            title="El libro de la selva", page=36, edition_date="oct. 6, 1926", Editorial="Anaya", author="Marta")
+            title="El libro de la selva", page=36, edition_date="1926-10-06")
 
     def test_str_method(self):
-        self.assertEqual(str(self.book), "El libro de la selva", 36)
+        self.assertEqual(str(self.book), "El libro de la selva",
+                         36, "1926-10-06")
 
     def gtest_was_published_recently(self):
         self.assertEqual(self.book.was_published_recently(), True)
